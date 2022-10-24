@@ -1,5 +1,7 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
+import { v4 as uuidv4 } from 'uuid';
+
 import css from '../css/phonebook.module.css';
 
 class ContactForm extends Component {
@@ -23,7 +25,13 @@ class ContactForm extends Component {
   hanldeSubmit = event => {
     event.preventDefault();
 
-    this.props.onSubmit(this.state);
+    const contact = {
+      id: uuidv4(),
+      name: this.state.name,
+      number: this.state.number,
+    };
+
+    this.props.onSubmit(contact);
 
     this.resetForm();
   };
@@ -46,8 +54,6 @@ class ContactForm extends Component {
               className={css.form__input}
               type="text"
               name="name"
-              placeholder="Contact name"
-              aria-label="Input for your name"
               value={this.state.name}
               onChange={this.hanldeChange}
               pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
@@ -61,8 +67,6 @@ class ContactForm extends Component {
               className={css.form__input}
               type="tel"
               name="number"
-              placeholder="Phone number"
-              aria-label="Input for your phone number"
               value={this.state.number}
               onChange={this.hanldeChange}
               pattern="(\+?( |-|\.)?\d{1,2}( |-|\.)?)?(\(?\d{3}\)?|\d{3})( |-|\.)?(\d{3}( |-|\.)?\d{4})"
@@ -71,7 +75,7 @@ class ContactForm extends Component {
             />
           </label>
           <div>
-            <button type="submit" className={css.add__button}>
+            <button className={css.add__button} type="submit">
               Add contact
             </button>
           </div>
